@@ -20,6 +20,12 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
+                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Dashboard
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Dashboard
+                                </jet-nav-link>
                             </div>
                         </div>
 
@@ -103,6 +109,7 @@
                             </div>
                         </div>
 
+                    <p @click="log($page)">1231232133</p>
                         <div class="mt-3 space-y-1">
                             <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
                                 Profile
@@ -174,6 +181,9 @@
             logout() {
                 this.$inertia.post(route('logout'));
             },
+            log(kek) {
+                console.log(kek);
+            }
         }
     }
 </script>
