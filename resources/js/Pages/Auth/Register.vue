@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <section class="text-gray-600 body-font">
+    <section class="text-gray-600 body-font mx-1 sm:mx-0">
         <div class="container py-15 mx-auto flex flex-wrap items-center">
             <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 text-center sm:text-left">
                 <h1 class="title-font font-medium text-3xl text-gray-900">Зарегистрируйтесь, чтобы иметь возможность бронировать билеты</h1>
@@ -16,7 +16,7 @@
                     </div>
                     <button class="select-none w-full text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Зарегистрироваться</button>
                 </form>
-                <a class="text-xs text-gray-500 mt-3 hover:text-gray-900" href="/authorization/">Уже есть аккаунт? Войти</a>
+                <a class="text-xs text-gray-500 mt-3 hover:text-gray-900" :href="route('login')">Уже есть аккаунт? Войти</a>
             </div>
         </div>
     </section>

@@ -15,7 +15,7 @@
                     </div>
                 <button name="auth_button" id="auth_button" class="w-full text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg select-none">Войти</button>
                 </form>
-                <a href="/registration/" class="text-xs text-gray-500 mt-3 hover:text-gray-900">Хотите создать новый аккаунт?</a>
+                <a :href="route('register')" class="text-xs text-gray-500 mt-3 hover:text-gray-900">Хотите создать новый аккаунт?</a>
             </div>
         </div>
     </section>

@@ -2,7 +2,7 @@
     <header class="container mx-auto px-4 sm:px-6 lg:px-8 mb-10">
         <nav class="bg-white border-b border-gray-100">
             <!-- Primary Navigation Menu -->
-            <div class="mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto">
                 <div class="flex justify-between min-h-full items-center">
                     <div class="flex">
                         <!-- Logo -->
