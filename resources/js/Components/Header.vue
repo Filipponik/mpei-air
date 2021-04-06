@@ -1,5 +1,5 @@
 <template>
-    <header class="container mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+    <header class="container mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="bg-white border-b border-gray-100">
             <!-- Primary Navigation Menu -->
             <div class="mx-auto">
@@ -124,13 +124,13 @@
                         'name': 'Login',
                         'shown_name': 'Войти',
                         'route_name': 'login',
-                        'condition': true,
+                        'condition': this.canLogin,
                     },
                     {
                         'name': 'Register',
                         'shown_name': 'Зарегистрироваться',
                         'route_name': 'register',
-                        'condition': true,
+                        'condition': this.canRegister,
                     },
                 ],
             }
