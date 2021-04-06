@@ -2,7 +2,7 @@
     <default-layout>
         <section class="text-gray-600 body-font">
             <div class="container px-5 py-15 mx-auto flex flex-wrap items-center">
-                <div class="border border-indigo-500 lg:w-1/3 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto md:mr-auto w-full mt-5 md:mt-0">
+                <div class="border border-indigo-500 lg:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto md:mr-auto w-full mt-5 md:mt-0">
                     <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Авторизация</h2>
                     <form action="auth.php" method="POST">
                         <div class="relative mb-4">
