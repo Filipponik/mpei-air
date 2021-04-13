@@ -1,11 +1,11 @@
 <template>
     <jet-form-section @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            Информация о профиле
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Обновите информацию вашего профиля и адрес электронной почты.
         </template>
 
         <template #form>
@@ -16,11 +16,11 @@
                             ref="photo"
                             @change="updatePhotoPreview">
 
-                <jet-label for="photo" value="Photo" />
+                <jet-label for="photo" value="Фото" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" v-show="! photoPreview">
-                    <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                    <img @load="isPhotoLoaded = true" :class="{'border border-indigo-500' : isPhotoLoaded}" :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -31,21 +31,35 @@
                 </div>
 
                 <jet-secondary-button class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    Выбрать новое фото
                 </jet-secondary-button>
 
                 <jet-secondary-button type="button" class="mt-2" @click.prevent="deletePhoto" v-if="user.profile_photo_path">
-                    Remove Photo
+                    Удалить фото
                 </jet-secondary-button>
 
                 <jet-input-error :message="form.errors.photo" class="mt-2" />
             </div>
 
+            <!-- Fam -->
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="fam" value="Фамилия" />
+                <jet-input id="fam" type="text" class="mt-1 block w-full" v-model="form.fam" autocomplete="fam" />
+                <jet-input-error :message="form.errors.fam" class="mt-2" />
+            </div>
+            
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
-                <jet-input-error :message="form.errors.name" class="mt-2" />
+                <jet-label for="im" value="Имя" />
+                <jet-input id="im" type="text" class="mt-1 block w-full" v-model="form.im" autocomplete="im" />
+                <jet-input-error :message="form.errors.im" class="mt-2" />
+            </div>
+            
+            <!-- Otch -->
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="otch" value="Отчество" />
+                <jet-input id="otch" type="text" class="mt-1 block w-full" v-model="form.otch" autocomplete="otch" />
+                <jet-input-error :message="form.errors.otch" class="mt-2" />
             </div>
 
             <!-- Email -->
@@ -58,11 +72,11 @@
 
         <template #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Сохранено.
             </jet-action-message>
 
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Сохранить
             </jet-button>
         </template>
     </jet-form-section>
@@ -94,11 +108,13 @@
             return {
                 form: this.$inertia.form({
                     _method: 'PUT',
-                    name: this.user.name,
+                    fam: this.user.fam,
+                    im: this.user.im,
+                    otch: this.user.otch,
                     email: this.user.email,
                     photo: null,
                 }),
-
+                isPhotoLoaded: false,
                 photoPreview: null,
             }
         },
