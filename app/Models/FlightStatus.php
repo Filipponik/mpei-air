@@ -5,14 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassType extends Model
+class FlightStatus extends Model
 {
     use HasFactory;
-    
-    protected $hidden = [
-        'id',
-        'created_at',
-        'updated_at',
-        'deleted_at'
-    ];
 }

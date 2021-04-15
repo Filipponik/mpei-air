@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'flights'], []);
+Route::group(['prefix' => 'flights'], function () {
+    Route::get('/', [FlightController::class, 'flights']);
+});
+
+Route::group(['prefix' => 'tariffs'], function () {
+    Route::get('/', [TariffController::class, 'tariffs']);
+});
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
