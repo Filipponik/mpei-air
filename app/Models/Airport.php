@@ -15,7 +15,7 @@ class Airport extends Model
     ];
 
     protected $hidden = [
-        'id'
+        'id',
         'city_id',
         'created_at',
         'updated_at',
