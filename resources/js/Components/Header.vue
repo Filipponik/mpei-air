@@ -165,14 +165,14 @@
                 showingNavigationDropdown: false,
                 navMenu: [
                     {
+                        'name': 'flight',
+                        'shown_name': 'Подобрать рейс',
+                        'route_name': 'flight',
+                    },
+                    {
                         'name': 'live-board',
                         'shown_name': 'Онлайн-табло',
                         'route_name': 'liveboard',
-                    },
-                    {
-                        'name': 'flight',
-                        'shown_name': 'Рейсы',
-                        'route_name': 'flight',
                     },
                     {
                         'name': 'parking-zone',

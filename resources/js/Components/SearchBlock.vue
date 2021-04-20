@@ -2,30 +2,55 @@
     <div class="p-5 border rounded border-indigo-500">
         <div class="mb-2">Поиск</div>
         <div>
-            <input class="bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" type="text" placeholder="Поиск..." />
+            <text-input v-model="searchQuery.query" class="w-full" :id="'search'" :ph="'Поиск...'" />
         </div>
-        <div>
-            <jet-button v-if="showFilters" class="my-2 mr-2 sm:mr:0">Искать</jet-button>
-            <jet-button @click="changeFilters" class="my-2">Фильтры</jet-button>
+        <div class="flex justify-between">
+            <jet-button @click="search" class="my-2 mr-2 sm:mr:0">Искать</jet-button>
+            <jet-button @click="showFilters = !showFilters" class="my-2">Фильтры</jet-button>
+        </div>
+        <div v-show="showFilters">
+            <filter-block @filtersSet="setQuery($event)"/>
         </div>
     </div>
 </template>
 
 <script>
     import JetButton from '@/Jetstream/Button'
+    import FilterBlock from '@/Components/FilterBlock'
+    import TextInput from '@/Components/TextInput'
     
     export default {
         components: {
             JetButton,
+            FilterBlock,
+            TextInput,
         },
 
-        data() {
-            showFilters: false
+        data: function () {
+            return {
+                showFilters: false,
+                searchQuery: {
+                    query: '',
+                    code: '',
+                    city_from: '',
+                    city_to: '',
+                    date_from: '',
+                    date_to: '',
+                    airport_from: '',
+                    airport_to: '',
+                },
+            }
         },
 
         methods: {
-            changeFilters: function() {
-                this.showFilters = true;
+            search: function() {                    
+                this.$emit('search', this.searchQuery);
+            },
+            setQuery: function(filterInfo) {
+                let q = this.searchQuery.query;
+                this.searchQuery = filterInfo;
+                this.searchQuery.query = q;
+                // console.log(this.searchQuery);
             }
         }
 

@@ -1,7 +1,7 @@
 <template>
     <div class="border rounded border-indigo-500 w-full px-1 py-3 flex flex-wrap sm:flex-nowrap justify-between bg-gray-100">
         <div class="mx-1 sm:mx-2 mb-2 sm:mb-0 w-full sm:w-auto flex sm:block flex-wrap sm:flex-nowrap border-b border-indigo-200 sm:border-b-0 items-center sm:items-start justify-between">
-            <div class="text-lg sm:text-xl" title="Номер рейса">{{ flight.code }}</div>
+            <div class="text-lg sm:text-xl select-all" title="Номер рейса">{{ flight.code }}</div>
             <div class="text-xs">Статус: {{ flight.status }}</div>
         </div>
         <div class="mx-1 sm:mx-2">
