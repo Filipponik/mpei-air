@@ -2,7 +2,7 @@
     <div>
         <div class="mb-1 sm:mb-2">
             <label class="block" for="code">Код рейса</label>
-            <text-input @update:modelValue="filtersSet" type="text"  v-model="searchQuery.code" class="w-full" :id="'code'" :ph="'Код рейса'"/>
+            <text-input @update:modelValue="filtersSet" v-model="searchQuery.code" class="w-full" :id="'code'" :ph="'Код рейса'"/>
         </div>
         <div class="mb-1 sm:mb-2">
             <label class="block" for="city_from">Из города</label>
@@ -21,6 +21,7 @@
                 <template v-slot="{ inputValue, inputEvents }">
                     <text-input
                     class="w-full"
+                    :id="'date_from'"
                     :value="inputValue"
                     :ph="'Дата вылета'"
                     v-on="inputEvents" 
@@ -37,6 +38,7 @@
                 <template v-slot="{ inputValue, inputEvents }">
                     <text-input
                     class="w-full"
+                    :id="'date_to'"
                     :value="inputValue"
                     :ph="'Дата прилета'"
                     v-on="inputEvents" 
@@ -80,7 +82,6 @@
 
         methods: {
             filtersSet: function() {
-                // console.log(this.searchQuery);
                 this.$emit('filtersSet', this.searchQuery);
             },
         }

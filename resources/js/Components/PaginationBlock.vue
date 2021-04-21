@@ -11,18 +11,6 @@
 
 <script>    
     export default {
-        props: ['pages'],
-        data() {
-            return {
-
-            };
-        },
-
-        mounted() {
-        },
-
-        methods: {
-        }
-
+        props: ['pages']
     }
 </script>

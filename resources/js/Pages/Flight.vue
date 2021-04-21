@@ -45,13 +45,12 @@
                     query: '',
                     page: 1,
                 }
-            };
+            }
         },
 
         mounted() {
             if (localStorage.flightSearchOptions) {
                 this.searchOptions = JSON.parse(localStorage.flightSearchOptions)
-                console.log(this.searchOptions)
             }
             this.request('/api/flights/', this.searchOptions)
         },
@@ -68,7 +67,7 @@
             },
 
             changeSearchOptions: function (val) {
-                console.log(val);
+                // console.log(val);
                 this.searchOptions = val;
                 localStorage.flightSearchOptions = JSON.stringify(val);
                 if (JSON.stringify(this.searchOptions) === JSON.stringify(this.emptySearch)) {
@@ -83,13 +82,6 @@
                 {
                     this.searchOptions.page = page.label;
                     this.changeSearchOptions(this.searchOptions);
-                    // if (JSON.stringify(this.searchOptions) === JSON.stringify(this.emptySearch))
-                    //     this.request(page.url);
-                    // else {
-                    //     this.request('/api/flights/', this.searchOptions);
-                    // }
-
-                    // this.request(page.url);
                 }
             }
         }

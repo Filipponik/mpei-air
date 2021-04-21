@@ -47,11 +47,11 @@
                 delete this.searchQuery.page;
                 this.$emit('search', this.searchQuery);
             },
+            
             setQuery: function(filterInfo) {
                 let q = this.searchQuery.query;
                 this.searchQuery = filterInfo;
                 this.searchQuery.query = q;
-                // console.log(this.searchQuery);
             }
         }
 

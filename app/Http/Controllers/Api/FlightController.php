@@ -10,11 +10,12 @@ class FlightController extends Controller
 {
     public function flights(Request $req) {
         $query = $req->query();
+        $countOnPage = 10;
         if (empty($query) || !$query) {
-            $flights = Flight::paginate(10);
+            $flights = Flight::paginate($countOnPage);
         }
         else {
-            $flights = Flight::customSearch($query)->paginate(10);
+            $flights = Flight::customSearch($query)->paginate($countOnPage);
         }
         
         return response()->json($flights, 200);
