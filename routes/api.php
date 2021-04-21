@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['prefix' => 'flights'], function () {
     Route::get('/', [FlightController::class, 'flights']);
+    Route::get('/{code}', [FlightController::class, 'flightByCode']);
 });
 
 Route::group(['prefix' => 'tariffs'], function () {

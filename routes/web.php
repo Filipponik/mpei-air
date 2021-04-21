@@ -30,6 +30,12 @@ Route::get('flight', function() {
     return Inertia::render('Flight');
 })->name('flight');
 
+Route::get('flight/{code}', function($code) {
+    return Inertia::render('FlightCard', [
+        'flight_code' => $code,
+    ]);
+})->name('flightcard');
+
 Route::get('parking-zone', function() {
     return Inertia::render('ParkingZone');
 })->name('parkingzone');

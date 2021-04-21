@@ -20,4 +20,16 @@ class FlightController extends Controller
         
         return response()->json($flights, 200);
     }
+
+    public function flightByCode(Request $req, string $code) {
+        if (!$code)
+            return abort(404);
+        
+        $flight = Flight::where('code', $code)->get();
+        
+        if ($flight->isEmpty()) 
+            return abort(404);
+             
+        return response()->json($flight->first(), 200);
+    }
 }
