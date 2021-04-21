@@ -68,6 +68,7 @@
             },
 
             changeSearchOptions: function (val) {
+                console.log(val);
                 this.searchOptions = val;
                 localStorage.flightSearchOptions = JSON.stringify(val);
                 if (JSON.stringify(this.searchOptions) === JSON.stringify(this.emptySearch)) {

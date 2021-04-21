@@ -43,7 +43,8 @@
         },
 
         methods: {
-            search: function() {                    
+            search: function() {          
+                delete this.searchQuery.page;
                 this.$emit('search', this.searchQuery);
             },
             setQuery: function(filterInfo) {
