@@ -9,9 +9,17 @@
             <jet-button @click="showFilters = !showFilters" class="my-2">Фильтры</jet-button>
         </div>
         <div v-show="showFilters">
-            <filter-block @filtersSet="setQuery($event)"/>
+            <filter-block @filtersSet="setQuery($event)" :searchQuery="searchQuery"/>
         </div>
     </div>
+    <div v-if="showNotification" class="mt-2 sm:mt-3 p-5 border rounded border-indigo-500 break-words">
+        <p>Были использованы Ваши последние фильтры. Убрать их?</p>
+        <div class="flex justify-between">
+            <jet-button @click="clearFilters" class="my-2 mr-2 sm:mr:0">Убрать</jet-button>
+            <jet-button @click="showNotification = !showNotification" class="my-2">Оставить</jet-button>
+        </div>
+    </div>
+    
 </template>
 
 <script>
@@ -29,6 +37,17 @@
         data: function () {
             return {
                 showFilters: false,
+                emptySearch: {
+                    code: '',
+                    city_from: '',
+                    city_to: '',
+                    date_from: '',
+                    date_to: '',
+                    airport_from: '',
+                    airport_to: '',
+                    query: '',
+                    page: 1,
+                },
                 searchQuery: {
                     query: '',
                     code: '',
@@ -39,6 +58,17 @@
                     airport_from: '',
                     airport_to: '',
                 },
+                filters: false,
+                showNotification: false,
+            }
+        },
+
+        mounted() {
+            if (localStorage.flightSearchOptions) {
+                this.filters = JSON.parse(localStorage.flightSearchOptions)
+                this.showNotification = true;
+                if (this.filters) 
+                    this.searchQuery = this.filters
             }
         },
 
@@ -52,6 +82,12 @@
                 let q = this.searchQuery.query;
                 this.searchQuery = filterInfo;
                 this.searchQuery.query = q;
+            },
+
+            clearFilters: function () {
+                this.showNotification = false;
+                this.$emit('clearFilters');
+                this.searchQuery = this.emptySearch;
             }
         }
 

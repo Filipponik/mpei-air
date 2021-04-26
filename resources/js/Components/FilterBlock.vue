@@ -62,21 +62,14 @@
     import TextInput from '@/Components/TextInput'
     
     export default {
+        props: ['searchQuery'],
+
         components: {
             TextInput,
         },
 
         data: function () {
             return {
-                searchQuery: {
-                    code: '',
-                    city_from: '',
-                    city_to: '',
-                    date_from: '',
-                    date_to: '',
-                    airport_from: '',
-                    airport_to: '',
-                },
             }
         },
 

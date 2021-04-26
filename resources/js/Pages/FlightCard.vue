@@ -1,6 +1,10 @@
 <template>
     <default-layout>
-        <flight-card-block :flight="flightInfo" @click="request"/>
+        <div class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
+            <div class="w-full sm:w-1/2">
+                <flight-card-block :flight="flightInfo" :isFromList="false" />
+            </div>
+        </div>
     </default-layout>
 </template>
 
@@ -33,8 +37,6 @@
         },
 
         methods: {
-            request: function(info) {
-            }
         }
     }
 </script>

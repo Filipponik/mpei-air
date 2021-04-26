@@ -118,7 +118,7 @@
 
                         <!-- Authentication -->
                         <form method="POST" @submit.prevent="logout">
-                            <jet-responsive-nav-link as="button">
+                            <jet-responsive-nav-link>
                                 Выйти
                             </jet-responsive-nav-link>
                         </form>
@@ -205,6 +205,12 @@
                     },
                 ],
             }
+        },
+
+        methods: {
+            logout() {
+                this.$inertia.post(route('logout'));
+            },
         },
     }
 </script>

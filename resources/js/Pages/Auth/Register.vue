@@ -1,6 +1,5 @@
 <template>
     <default-layout>
-        <button class="border rounded border-indigo-500 p-2 m-4" @click="log(form)">Useless btn</button>
         <section class="text-gray-600 body-font sm:mx-0">
             <div class="container py-15 mx-auto flex flex-wrap items-center">
                 <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 text-center sm:text-left">
@@ -128,9 +127,6 @@
                     onFinish: () => this.form.reset('password', 'password_confirmation'),
                 })
             },
-            log(kek) {
-                console.log(kek);
-            }
         }
     }
 </script>

@@ -181,9 +181,6 @@
             logout() {
                 this.$inertia.post(route('logout'));
             },
-            log(kek) {
-                console.log(kek);
-            }
         }
     }
 </script>
