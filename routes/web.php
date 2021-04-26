@@ -26,15 +26,23 @@ Route::get('liveboard', function() {
     return Inertia::render('Liveboard');
 })->name('liveboard');
 
-Route::get('flight', function() {
-    return Inertia::render('Flight');
-})->name('flight');
+Route::group(['prefix' => 'flight'] , function () {
+    Route::get('/', function() {
+        return Inertia::render('Flight');
+    })->name('flight');
 
-Route::get('flight/{code}', function($code) {
-    return Inertia::render('FlightCard', [
-        'flight_code' => $code,
-    ]);
-})->name('flightcard');
+    Route::get('{code}', function($code) {
+        return Inertia::render('FlightCard', [
+            'flight_code' => $code,
+        ]);
+    })->name('flightcard');
+
+    Route::get('{code}/buy', function($code) {
+        return Inertia::render('BuyTicket', [
+            'flight_code' => $code,
+        ]);
+    })->name('buyticket');
+});
 
 Route::get('parking-zone', function() {
     return Inertia::render('ParkingZone');
