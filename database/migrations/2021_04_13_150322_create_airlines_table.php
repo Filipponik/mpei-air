@@ -15,6 +15,7 @@ class CreateAirlinesTable extends Migration
     {
         Schema::create('airlines', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name');
 
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Flight extends Model
 {
@@ -14,12 +15,14 @@ class Flight extends Model
         'status',
         'airport_from',
         'airport_to',
+        'airline'
     ];
 
     protected $hidden = [
         'id',
         'airport_from_id',
         'airport_to_id',
+        'airline_id',
         'flight_status_id',
         'created_at',
         'updated_at',
@@ -46,10 +49,10 @@ class Flight extends Model
             'type' => 'join'
         ],
         'date_from' => [
-            'type' => 'default'
+            'type' => 'date'
         ],
         'date_to' => [
-            'type' => 'default'
+            'type' => 'date'
         ],
     ];
 
@@ -69,23 +72,40 @@ class Flight extends Model
             if (!in_array($key, array_keys($this->enabledForSearch)) || !$value || $value === '')
                 continue;
 
-            if ($this->enabledForSearch[$key]['type'] == 'default') {
-                $key = ($key == 'code') ? 'flights.code' : $key;
-                $query->where($key, $value);
-            }
-            else if ($this->enabledForSearch[$key]['type'] == 'join') {
-                if ($key == 'airport_from' || $key == 'airport_to') {
-                    $query->where($key.'.code', $value)
-                            ->orWhere($key.'.name', $value);
-                }
-                else if ($key == 'city_from') {
-                    $query->join('cities as city_from', 'airport_from.city_id', '=', 'city_from.id');
-                    $query->where('city_from.name', $value);
-                }
-                else if ($key == 'city_to') {
-                    $query->join('cities as city_to', 'airport_to.city_id', '=', 'city_to.id');
-                    $query->where('city_to.name', $value);
-                }
+            switch ($this->enabledForSearch[$key]['type']) {
+                case 'default':
+                    $key = ($key == 'code') ? 'flights.code' : $key;
+                    $query->where($key, $value);
+                    break;
+                
+                case 'join':
+                    if ($key == 'airport_from' || $key == 'airport_to') {
+                        $query->where($key.'.code', $value)
+                                ->orWhere($key.'.name', $value);
+                    }
+                    else if ($key == 'city_from') {
+                        $query->join('cities as city_from', 'airport_from.city_id', '=', 'city_from.id');
+                        $query->where('city_from.name', $value);
+                    }
+                    else if ($key == 'city_to') {
+                        $query->join('cities as city_to', 'airport_to.city_id', '=', 'city_to.id');
+                        $query->where('city_to.name', $value);
+                    }
+                    break;
+                
+                case 'date':
+                    $date = [
+                        (new Carbon($value))->addHours(3)->toDateTimeString(),
+                        (new Carbon($value))->addHours(27)->toDateTimeString()
+                    ];
+                    
+                    $query->where($key, '>', $date[0])
+                        ->where($key, '<', $date[1]);
+
+                    break;
+                
+                default:
+                    break;
             }
         }
         return $query;
@@ -111,6 +131,18 @@ class Flight extends Model
         return $this->belongsTo(Airport::class, 'airport_to_id', 'id');
     }
     
+
+    /**
+     * Get the airline that owns the Flight
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function airline(): BelongsTo
+    {
+        return $this->belongsTo(Airline::class, 'airline_id', 'id');
+    }
+
+
     /**
      * Get the status that owns the Flight
      *
@@ -126,6 +158,9 @@ class Flight extends Model
     }
     public function getAirportToAttribute() {
         return $this->airport_to()->first();
+    }
+    public function getAirlineAttribute() {
+        return $this->airline()->first();
     }
     public function getStatusAttribute() {
         return $this->status()->first()->name;

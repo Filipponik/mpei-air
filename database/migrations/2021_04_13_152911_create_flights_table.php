@@ -21,10 +21,12 @@ class CreateFlightsTable extends Migration
             $table->unsignedBigInteger('flight_status_id');
             $table->unsignedBigInteger('airport_from_id');
             $table->unsignedBigInteger('airport_to_id');
+            $table->unsignedBigInteger('airline_id');
 
             $table->foreign('flight_status_id')->references('id')->on('flight_statuses');
             $table->foreign('airport_from_id')->references('id')->on('airports');
             $table->foreign('airport_to_id')->references('id')->on('airports');
+            $table->foreign('airline_id')->references('id')->on('airlines');
             $table->timestamps();
             $table->softDeletes();
         });

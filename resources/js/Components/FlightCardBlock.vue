@@ -87,7 +87,7 @@
             getDate: function (dateString) {
                 let dateObj = new Date(dateString);
                 let day = this.zeroIfNeeded(dateObj.getDate());
-                let month = this.zeroIfNeeded(dateObj.getMonth());
+                let month = this.zeroIfNeeded(dateObj.getMonth()+1);
 
                 return day + '.' + month + '.' + dateObj.getFullYear();
             },

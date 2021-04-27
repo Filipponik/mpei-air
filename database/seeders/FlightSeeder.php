@@ -16,7 +16,7 @@ class FlightSeeder extends Seeder
      */
     public function run()
     {
-        $count = 50;
+        $count = 5000;
         $payload = [];
         $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $digits = '1234567890';
@@ -29,32 +29,16 @@ class FlightSeeder extends Seeder
                 ? mb_substr($alphabet, rand(0, 25), 1) . mb_substr($digits, rand(0, 9), 1)
                 : mb_substr($alphabet, rand(0, 25), 1) . mb_substr($alphabet, rand(0, 25), 1);
             $payload[] = [
-                'code' => $code . ' ' . (string)rand(100, 9999),
+                'code' => $code . ' ' . (string)rand(100, 99999),
                 'date_from' => $time_from->format('Y-m-d H:i:s'),
                 'date_to' => $time_to->format('Y-m-d H:i:s'),
                 'flight_status_id' => rand(1, 5),
                 'airport_from_id' => rand(1, 9),
                 'airport_to_id' => rand(1, 9),
+                'airline_id' => rand(1, 9),
             ];
         }
-        // $payload = [
-        //     [
-        //         'name_ISO' => 'Russia',
-        //         'name' => 'Россия',
-        //     ],
-        //     [
-        //         'name_ISO' => 'USA',
-        //         'name' => 'США',
-        //     ],
-        //     [
-        //         'name_ISO' => 'Japan',
-        //         'name' => 'Япония',
-        //     ],
-        //     [
-        //         'name_ISO' => 'Ukraine',
-        //         'name' => 'Украина',
-        //     ]
-        // ];
+        
         DB::table('flights')->insert($payload);
     }
 }
