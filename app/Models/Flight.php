@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Carbon\Carbon;
 
 class Flight extends Model
@@ -15,14 +16,15 @@ class Flight extends Model
         'status',
         'airport_from',
         'airport_to',
-        'airline'
+        'airline',
+        'plane',
     ];
 
     protected $hidden = [
         'id',
         'airport_from_id',
         'airport_to_id',
-        'airline_id',
+        'plane_id',
         'flight_status_id',
         'created_at',
         'updated_at',
@@ -111,6 +113,17 @@ class Flight extends Model
         return $query;
         
     }
+
+    /**
+     * Get the plane that owns the Flight
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plane(): BelongsTo
+    {
+        return $this->belongsTo(Plane::class, 'plane_id', 'id');
+    }
+
     /**
      * Get the airport_from that owns the Flight
      *
@@ -160,7 +173,10 @@ class Flight extends Model
         return $this->airport_to()->first();
     }
     public function getAirlineAttribute() {
-        return $this->airline()->first();
+        return $this->plane()->first()->airline()->first();
+    }
+    public function getPlaneAttribute() {
+        return $this->plane()->first()->plane_model()->first();
     }
     public function getStatusAttribute() {
         return $this->status()->first()->name;

@@ -30,6 +30,9 @@ class StatusesSeeder extends Seeder
             [
                 'name' => 'Регистрация завершена',
             ],
+            [
+                'name' => 'Завершен',
+            ],
         ];
         DB::table('flight_statuses')->insert($payload);
 

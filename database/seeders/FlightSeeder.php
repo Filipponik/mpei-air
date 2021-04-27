@@ -21,21 +21,27 @@ class FlightSeeder extends Seeder
         $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $digits = '1234567890';
         for ($i = 0; $i < $count; $i++) {
-            $time_from = (rand(1, 2) == 1)
-                ? now()->subDays(rand(1,30))
-                : now()->addDays(rand(1,30));
+            if (rand(1, 2) == 1) {
+                $time_from = now()->subDays(rand(1,30));
+                $status = 6;
+            } else {
+                $time_from = now()->addDays(rand(1,30));
+                $status = rand(1, 5);
+            }
+
             $time_to = $time_from->copy()->addMinutes(rand(120, 600));
             $code = rand(1,2) == 1
                 ? mb_substr($alphabet, rand(0, 25), 1) . mb_substr($digits, rand(0, 9), 1)
                 : mb_substr($alphabet, rand(0, 25), 1) . mb_substr($alphabet, rand(0, 25), 1);
+            $code .= ' ' . ($i + 5000);
             $payload[] = [
-                'code' => $code . ' ' . (string)rand(100, 99999),
+                'code' => $code,
                 'date_from' => $time_from->format('Y-m-d H:i:s'),
                 'date_to' => $time_to->format('Y-m-d H:i:s'),
-                'flight_status_id' => rand(1, 5),
+                'flight_status_id' => $status,
                 'airport_from_id' => rand(1, 9),
                 'airport_to_id' => rand(1, 9),
-                'airline_id' => rand(1, 9),
+                'plane_id' => rand(1, 500),
             ];
         }
         
