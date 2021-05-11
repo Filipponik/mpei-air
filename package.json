@@ -26,6 +26,9 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
-        "v-calendar": "^3.0.0-alpha.3"
+        "@popperjs/core": "^2.9.2",
+        "es6-promise": "^4.2.8",
+        "v-calendar": "^3.0.0-alpha.3",
+        "vuex": "^4.0.0"
     }
 }
