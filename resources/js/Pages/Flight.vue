@@ -14,7 +14,7 @@
                     <search-block @clearFilters="clearFilters" @search="changeSearchOptions($event)" />
                 </div>
                 <div v-if="flightInfo" class="flex-grow w-full sm:w-1/2 my-2 mx-1 lg:m-5">
-                    <div v-for="flight in flightInfo.data">
+                    <div v-for="flight in flightInfo.data" :key="flight.code">
                         <div class="mb-5">
                             <flight-block :flight="flight" @selected="openCard($event)"/>
                         </div>
@@ -67,6 +67,8 @@
                 this.searchOptions = JSON.parse(localStorage.flightSearchOptions)
             }
             this.request('/api/flights', this.searchOptions)
+            
+            document.title = "Поиск рейсов"
         },
 
         methods: {
