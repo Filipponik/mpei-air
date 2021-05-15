@@ -2,9 +2,9 @@
     <default-layout>
         <div class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
             <div class="w-full sm:w-1/2">
-                <flight-card-block :flight="flightInfo" :isFromList="false" :showButtons="false">
+                <!-- <flight-card-block :flight="flightInfo" :isFromList="false" :showButtons="false">
                     <p class="text-lg md:text-xl mt-3 text-indigo-600 select-none">Покупка билета ниже ↓</p>
-                </flight-card-block>
+                </flight-card-block> -->
                 <div class="mt-2 md:mt-10 relative border border-indigo-500 w-full bg-gray-100 rounded-lg p-2 sm:p-8 inline-block ml-auto mr-auto shadow-xl">
                     <buy-ticket-stage :title="'Кто полетит'" v-if="currentStage >= 1">
                         <input type="radio" id="me" name="passenger" v-model="passengerType" value="me">
@@ -45,13 +45,57 @@
                             </v-date-picker>
                         </div>
                     </buy-ticket-stage>
-                    <buy-ticket-stage :title="'Выберите место'" v-if="currentStage >= 2">
-
+                    
+                    <buy-ticket-stage :title="'Выберите класс'" v-if="currentStage >= 2">
+                        <div v-if="available_classes.econom">
+                            <input type="radio" name="type_class" id="econom" value="econom" v-model="type_class">
+                            <label class="mx-2" for="econom">Эконом</label>
+                        </div>
+                        <div v-if="available_classes.business">
+                            <input type="radio" name="type_class" id="business" value="business" v-model="type_class">
+                            <label class="mx-2" for="business">Бизнес</label><br>
+                        </div>
+                        <div v-if="available_classes.first">
+                            <input type="radio" name="type_class" id="first" value="first" v-model="type_class">
+                            <label class="mx-2" for="first">Первый</label>
+                        </div>
                     </buy-ticket-stage>
-                    <buy-ticket-stage :title="'Выберите дополнительные услуги'" v-if="currentStage >= 3">
+
+                    <buy-ticket-stage :title="'Выберите место'" v-if="currentStage >= 3">
+                        <div v-if="available_classes.econom && type_class == 'econom'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
+                                <div v-for="j in flightInfo.plane.seats_econom" :key="j">
+                                    <div @click="select_seat(i, j)"
+                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
+                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                </div><br>
+                            </div>
+                        </div>
+                        <div v-if="available_classes.business && type_class == 'business'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_business" :key="i">
+                                <div v-for="j in flightInfo.plane.seats_business" :key="j">
+                                    <div @click="select_seat(i, j)"
+                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
+                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                </div><br>
+                            </div>
+                        </div>
+                        <div v-if="available_classes.first && type_class == 'first'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_first" :key="i">
+                                <div v-for="j in flightInfo.plane.seats_first" :key="j">
+                                    <div @click="select_seat(i, j)"
+                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
+                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                </div><br>
+                            </div>
+                        </div>
+                    </buy-ticket-stage>
+
+                    <buy-ticket-stage :title="'Выберите дополнительные услуги'" v-if="currentStage >= 4">
                         
                     </buy-ticket-stage>
-                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 4">
+
+                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5">
                             <input type="radio" name="payment_method" id="cash" v-model="payment_method">
                             <label class="mx-2" for="cash">Наличные при получении</label><br>
                             <input type="radio" name="payment_method" id="card" v-model="payment_method">
@@ -59,7 +103,8 @@
                             <input type="radio" name="payment_method" id="gpay" v-model="payment_method">
                             <label class="ml-2 mb-1" for="gpay">Google Pay</label>
                     </buy-ticket-stage>
-                    <buy-ticket-stage v-if="currentStage >= 5" :class="'mb-0'">
+
+                    <buy-ticket-stage v-if="currentStage >= 6" :class="'mb-0'">
                         <jet-button @click="tryToBuyTicket">Купить билет</jet-button>
                     </buy-ticket-stage>
                 </div>
@@ -102,7 +147,17 @@
                     sex: '',
                     date: '',
                 },
-                payment_method: false
+                payment_method: false,
+                type_class: false,
+                available_classes: {
+                    econom: false,
+                    business: false,
+                    first: false,
+                },
+                selected_seat: {
+                    col: false,
+                    row: false
+                }
             }
         },
 
@@ -112,44 +167,92 @@
                 url: '/api/flights/' + this.flight_code
             }).then((response) => {
                 this.flightInfo = response.data;
+                if (this.flightInfo.plane.cols_econom * this.flightInfo.plane.seats_econom > 0) 
+                    this.available_classes.econom = true
+                if (this.flightInfo.plane.cols_business * this.flightInfo.plane.seats_business > 0) 
+                    this.available_classes.business = true
+                if (this.flightInfo.plane.cols_first * this.flightInfo.plane.seats_first > 0) 
+                    this.available_classes.first = true
             });
             document.title = "Купить билет на рейс "+ this.flight_code
         },
 
         watch: {
             passengerType() {
-                this.checkPassenger()
+                this.payment_method = false
+                this.type_class = false
+                this.selected_seat = {
+                    col: false,
+                    row: false
+                }
+                if (this.checkPassenger() === true && this.currentStage >= 1)
+                    this.currentStage = 2
+                else 
+                    this.currentStage = 1
             },
             passenger: {
                 handler: function() {
-                    this.checkPassenger()
+                    if (this.checkPassenger() === true && this.currentStage === 1) 
+                        this.currentStage = 2
+                    else
+                        this.currentStage = 1
+
                 },
                 deep: true
             },
+            type_class() {
+                if (this.check_class() === true && this.currentStage === 2)
+                    this.currentStage = 3
+                    
+                this.selected_seat = {
+                    col: false,
+                    row: false
+                }
+            }
+
         },
 
         methods: {
             checkPassenger: function() {
                 if (this.passengerType === 'me') 
-                {
-                    this.currentStage = 2;
                     return true;
-                }
-                else if (this.passengerType === 'another') {
+                
+                if (this.passengerType === 'another') {
                     if (this.passenger.im.trim() == ''
                         || this.passenger.fam.trim() == ''
                         || this.passenger.otch.trim() == ''
                         || this.passenger.sex.trim() == ''
                         || (typeof this.passenger.date) !== 'object') {
-                        this.currentStage = 1
                         return false
                     }
-                    if (this.currentStage === 1)
-                        this.currentStage = 2
+                    return true
                 }
-                else 
-                    this.currentStage = 1
+
+                return false
             },
+
+            check_class: function() {
+                if (this.type_class !== 'econom' && this.type_class !== 'business' && this.type_class !== 'first')
+                    return false
+                if (this.type_class === 'econom' && this.available_classes.econom === false) 
+                    return false
+                if (this.type_class === 'business' && this.available_classes.business === false) 
+                    return false
+                if (this.type_class === 'first' && this.available_classes.first === false) 
+                    return false
+
+                return true
+            },
+
+            get_seat_name: function(seat, col) {
+                return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[col-1] + seat
+            },
+
+            select_seat: function(seat, col) {
+                this.selected_seat.col = col
+                this.selected_seat.seat = seat
+            },
+
             tryToBuyTicket: function(info) {
                 axios({
                     method: 'POST',
