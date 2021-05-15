@@ -22,7 +22,7 @@ const app = createApp({
     .mixin({ methods: { route } })
     .use(InertiaPlugin)
     .use(VCalendar, {})
+    .use(store)
     .mount(el);
 
-app.use(store)
 InertiaProgress.init({ color: '#4B5563' });

@@ -1,15 +1,13 @@
 <template>
     <div class="mb-5 md:mb-2">
-        <slot name="header">
-            <h1 class="text-8xl"></h1>
-        </slot>
+        <h1 v-if="title" class="text-xl md:text-2xl my-2"> {{ title }}</h1>
         <slot></slot>
     </div>
 </template>
 <script>
 
     export default {
-        props: ['',],
+        props: ['title',],
 
         components: {
 
