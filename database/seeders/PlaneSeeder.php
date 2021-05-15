@@ -29,9 +29,12 @@ class PlaneSeeder extends Seeder
 
             $payload[] = [
                 'name' => $name,
-                'count_econom' => rand(10, 50),
-                'count_business' => rand(10, 50),
-                'count_first' => rand(10, 50),
+                'cols_econom' => rand(10, 50),
+                'cols_business' => rand(10, 50),
+                'cols_first' => rand(10, 50),
+                'seats_econom' => rand(0, 9),
+                'seats_business' => rand(0, 3),
+                'seats_first' => rand(0, 2),
             ];
 
         }

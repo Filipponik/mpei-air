@@ -16,9 +16,12 @@ class CreatePlaneModelsTable extends Migration
         Schema::create('plane_models', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedInteger('count_econom')->default(0);
-            $table->unsignedInteger('count_business')->default(0);
-            $table->unsignedInteger('count_first')->default(0);
+            $table->unsignedInteger('cols_econom')->default(0);
+            $table->unsignedInteger('seats_econom')->default(0);
+            $table->unsignedInteger('cols_business')->default(0);
+            $table->unsignedInteger('seats_business')->default(0);
+            $table->unsignedInteger('cols_first')->default(0);
+            $table->unsignedInteger('seats_first')->default(0);
             
             $table->timestamps();
             $table->softDeletes();
