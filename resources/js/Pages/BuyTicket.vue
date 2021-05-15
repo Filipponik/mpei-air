@@ -108,7 +108,6 @@
                         <jet-button @click="tryToBuyTicket">Купить билет</jet-button>
                     </buy-ticket-stage>
                 </div>
-                <p class="text-3xl border rounded" @click="currentStage++">Stage++</p>
             </div>
             
 
@@ -208,7 +207,18 @@
                     col: false,
                     row: false
                 }
+            },
+            selected_seat: {
+                handler: function() {
+                    if (this.selected_seat
+                        && this.selected_seat.col != false
+                        && this.selected_seat.row != false
+                        && this.currentStage === 3)
+                        this.currentStage = 4
+                },
+                deep: true
             }
+
 
         },
 
