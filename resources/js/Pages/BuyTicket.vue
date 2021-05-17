@@ -1,6 +1,6 @@
 <template>
     <default-layout>
-        <div class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
+        <div @click="currentStage++" class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
             <div class="w-full sm:w-1/2">
                 <!-- <flight-card-block :flight="flightInfo" :isFromList="false" :showButtons="false">
                     <p class="text-lg md:text-xl mt-3 text-indigo-600 select-none">Покупка билета ниже ↓</p>
@@ -10,8 +10,8 @@
                         <input type="radio" id="me" name="passenger" v-model="passengerType" value="me">
                         <label class="ml-2" for="me">Я</label><br>
 
-                        <input type="radio" id="another_person" name="passenger" v-model="passengerType" value="another">
-                        <label class="ml-2" for="another_person">Другой человек</label>
+                        <input type="radio" id="another" name="passenger" v-model="passengerType" value="another">
+                        <label class="ml-2" for="another">Другой человек</label>
 
                         <div v-show="passengerType === 'another'" class="mt-3 md:mt-2">
                             <h2 class="text-lg md:text-xl">Введите данные пассажира:</h2>
@@ -66,26 +66,26 @@
                             <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
                                 <div v-for="j in flightInfo.plane.seats_econom" :key="j">
                                     <div @click="select_seat(i, j)"
-                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
-                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                        class="w-10 text-xs text-center border rounded p-1 m-1"
+                                        :class="get_seat_style(i, j)">{{ get_seat_name(i,j) }}</div>
                                 </div><br>
                             </div>
                         </div>
-                        <div v-if="available_classes.business && type_class == 'business'">
-                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_business" :key="i">
+                        <div v-if="available_classes.econom && type_class == 'business'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
                                 <div v-for="j in flightInfo.plane.seats_business" :key="j">
                                     <div @click="select_seat(i, j)"
-                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
-                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                        class="w-10 text-xs text-center border rounded p-1 m-1"
+                                        :class="get_seat_style(i, j)">{{ get_seat_name(i,j) }}</div>
                                 </div><br>
                             </div>
                         </div>
-                        <div v-if="available_classes.first && type_class == 'first'">
-                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_first" :key="i">
+                        <div v-if="available_classes.econom && type_class == 'first'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
                                 <div v-for="j in flightInfo.plane.seats_first" :key="j">
                                     <div @click="select_seat(i, j)"
-                                        class="w-14 text-center border rounded border-indigo-500 p-1 m-1 hover:bg-indigo-100 cursor-pointer"
-                                        :class="(selected_seat.seat == i && selected_seat.col == j) ? 'bg-indigo-200' : 'bg-white'">{{ get_seat_name(i,j) }}</div>
+                                        class="w-10 text-xs text-center border rounded p-1 m-1"
+                                        :class="get_seat_style(i, j)">{{ get_seat_name(i,j) }}</div>
                                 </div><br>
                             </div>
                         </div>
@@ -96,12 +96,12 @@
                     </buy-ticket-stage>
 
                     <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5">
-                            <input type="radio" name="payment_method" id="cash" v-model="payment_method">
-                            <label class="mx-2" for="cash">Наличные при получении</label><br>
-                            <input type="radio" name="payment_method" id="card" v-model="payment_method">
-                            <label class="mx-2 mb-1" for="card">Картой онлайн</label><br>
-                            <input type="radio" name="payment_method" id="gpay" v-model="payment_method">
-                            <label class="ml-2 mb-1" for="gpay">Google Pay</label>
+                        <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
+                        <label class="mx-2" for="cash">Наличные при получении</label><br>
+                        <input type="radio" name="payment_method" id="card" value="card" v-model="payment_method">
+                        <label class="mx-2 mb-1" for="card">Картой онлайн</label><br>
+                        <input type="radio" name="payment_method" id="gpay" value="gpay" v-model="payment_method">
+                        <label class="ml-2 mb-1" for="gpay">Google Pay</label>
                     </buy-ticket-stage>
 
                     <buy-ticket-stage v-if="currentStage >= 6" :class="'mb-0'">
@@ -136,6 +136,11 @@
 
         data() {
             return {
+                seat_styles: {
+                    selected: 'bg-indigo-200 hover:bg-indigo-200 border-indigo-600 cursor-pointer',
+                    free: 'bg-white hover:bg-indigo-100 border-indigo-500 cursor-pointer',
+                    locked: 'bg-gray-200 hover:bg-gray-200 border-gray-200 cursor-default',
+                },
                 flightInfo: false,
                 currentStage: 1,
                 passengerType: false,
@@ -156,7 +161,8 @@
                 selected_seat: {
                     col: false,
                     row: false
-                }
+                },
+                token: 'l8XnDmZKIuqiYScUIGusrSFPBWbTbGKIHp5XXtvC',
             }
         },
 
@@ -223,6 +229,17 @@
         },
 
         methods: {
+            get_seat_style: function(i, j) {
+                if (this.selected_seat.row == i && this.selected_seat.col == j) {
+                    return this.seat_styles.selected
+                }
+                // TODO Сделать проверку на доступность места
+                if (true) {
+                    return this.seat_styles.free
+                }
+
+                return this.seat_styles.locked
+            },
             checkPassenger: function() {
                 if (this.passengerType === 'me') 
                     return true;
@@ -259,16 +276,32 @@
             },
 
             select_seat: function(seat, col) {
-                this.selected_seat.col = col
-                this.selected_seat.seat = seat
+                this.selected_seat = {
+                    col: col,
+                    row: seat,
+                }
             },
 
             tryToBuyTicket: function(info) {
                 axios({
                     method: 'POST',
-                    url: '/api/flights/' + this.flight_code + '/buy'
+                    url: '/api/tickets/buy',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + this.token
+                    },
+                    data: {
+                        'flight_code': this.flight_code,
+                        'passenger': this.passenger,
+                        'passengerType': this.passengerType,
+                        'type_class': this.type_class,
+                        'selected_seat': this.selected_seat,
+                        // TODO Добавить дополнительные услуги
+                        'optional_services': this.flight_code,
+                        // TODO ДОБАВИТЬ ЦЕНЫ
+                    }
                 }).then((response) => {
-                    console.log(response)
+                    console.log(response.data)
                 });
             },
         }

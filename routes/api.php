@@ -19,6 +19,10 @@ Route::group(['prefix' => 'flights'], function () {
     Route::get('/{code}', [FlightController::class, 'flightByCode']);
 });
 
+Route::group(['prefix' => 'tickets', 'middleware' => 'auth:sanctum'], function() {
+    Route::post('buy', [TicketController::class, 'buyTicket']);
+});
+
 Route::group(['prefix' => 'tariffs'], function () {
     Route::get('/', [TariffController::class, 'tariffs']);
 });
