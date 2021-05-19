@@ -44,6 +44,10 @@ class User extends Authenticatable
     ];
 
 
+    protected function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->fam . ' ' . $this->im).'&color=7F9CF5&background=EBF4FF';
+    }
     
     /**
      * The attributes that should be hidden for arrays.
