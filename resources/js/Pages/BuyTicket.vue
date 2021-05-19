@@ -25,9 +25,9 @@
                             <text-input :id="'otch'" :ph="'Иванович'" v-model="passenger.otch" class="w-full"/>
 
                             <p class="mt-2">Пол:</p>
-                            <input type="radio" name="sex" id="male" v-model="passenger.sex">
+                            <input type="radio" name="sex" id="male" value="male" v-model="passenger.sex">
                             <label class="mx-2" for="male">Мужской</label>
-                            <input type="radio" name="sex" id="female" v-model="passenger.sex">
+                            <input type="radio" name="sex" id="female" value="female" v-model="passenger.sex">
                             <label class="ml-2 mb-1" for="female">Женский</label>
 
                             <p class="mt-2">Дата рождения:</p>
@@ -96,8 +96,8 @@
                     </buy-ticket-stage>
 
                     <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5">
-                        <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
-                        <label class="mx-2" for="cash">Наличные при получении</label><br>
+                        <!-- <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
+                        <label class="mx-2" for="cash">Наличные при получении</label><br> -->
                         <input type="radio" name="payment_method" id="card" value="card" v-model="payment_method">
                         <label class="mx-2 mb-1" for="card">Картой онлайн</label><br>
                         <input type="radio" name="payment_method" id="gpay" value="gpay" v-model="payment_method">
@@ -162,7 +162,7 @@
                     col: false,
                     row: false
                 },
-                token: 'l8XnDmZKIuqiYScUIGusrSFPBWbTbGKIHp5XXtvC',
+                token: this.$page.props.user?.defaultToken,
             }
         },
 

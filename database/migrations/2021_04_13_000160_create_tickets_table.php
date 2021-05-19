@@ -17,6 +17,7 @@ class CreateTicketsTable extends Migration
             $table->id();
             $table->unsignedSmallInteger('row');
             $table->unsignedSmallInteger('col');
+            $table->string('class')->default('econom');
             $table->unsignedBigInteger('flight_id');
             $table->unsignedBigInteger('ticket_status_id');
             $table->unsignedBigInteger('tariff_id');

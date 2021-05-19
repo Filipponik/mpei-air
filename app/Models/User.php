@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -24,14 +25,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fam',
-        'im',
-        'otch' ,
+        // 'fam',
+        // 'im',
+        // 'otch' ,
         'login',
         'email',
+        'person_id',
         'password',
     ];
 
+    protected $appends = [
+        'fam',
+        'im',
+        'otch' ,
+        'sex',
+        'birth_date',
+        'profile_photo_url',
+    ];
+
+
+    
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -52,13 +65,30 @@ class User extends Authenticatable
     protected $casts = [
         // 'email_verified_at' => 'datetime',
     ];
-
+    
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    * Get the status that owns the Flight
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'person_id', 'id');
+    }
+
+    public function getFamAttribute() {
+        return $this->person()->first()->fam;
+    }
+    public function getImAttribute() {
+        return $this->person()->first()->im;
+    }
+    public function getOtchAttribute() {
+        return $this->person()->first()->otch;
+    }
+    public function getSexAttribute() {
+        return $this->person()->first()->sex;
+    }
+    public function getBirthDateAttribute() {
+        return $this->person()->first()->birth_date;
+    }
 }

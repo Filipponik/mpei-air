@@ -15,8 +15,32 @@
 
                     <form @submit.prevent="submit">
                         <div v-for="(field, key) in fields" class="relative mb-4">
-                            <label :for="key" class="leading-7 text-sm text-gray-600">{{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></label>
-                            <input :type="field.type" :id="key" v-model="field.model" :name="key" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" :placeholder="field.placeholder" :required="field.required">
+                            <div v-if="field.type == 'text' || field.type == 'password'">
+                                <label :for="key" class="leading-7 text-sm text-gray-600">{{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></label>
+                                <input :type="field.type" :id="key" v-model="field.model" :name="key" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" :placeholder="field.placeholder" :required="field.required">
+                            </div>
+                            <div v-else-if="field.type == 'radio'">
+                                <p class="leading-7 text-sm text-gray-600"> {{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></p>
+                                <div v-for="value in field.values">
+                                    <input type="radio" :name="key" :id="value.name" :value="value.name" v-model="field.model">
+                                    <label class="mx-2 w-full" :for="value.name">{{ value.shown_name }}</label>
+                                </div>
+                            </div>
+                            <div v-else-if="field.type == 'date'">
+                                <p class="leading-7 text-sm text-gray-600"> {{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></p>
+                                <v-date-picker v-model="field.model"
+                                    :max-date="new Date()">
+                                    <template v-slot="{ inputValue, inputEvents }">
+                                        <text-input
+                                        class="w-full"
+                                        :id="key"
+                                        :value="inputValue"
+                                        :ph="field.placeholder"
+                                        v-on="inputEvents" 
+                                        />
+                                    </template>
+                                </v-date-picker>
+                            </div>
                         </div>
 
                         <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class="select-none w-full text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Зарегистрироваться</button>
@@ -30,25 +54,17 @@
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from "@/Jetstream/Checkbox";
     import JetLabel from '@/Jetstream/Label'
     import JetValidationErrors from '@/Jetstream/ValidationErrors'
     import DefaultLayout from '@/Layouts/DefaultLayout'
+    import TextInput from '@/Components/TextInput'
 
     export default {
         components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
             JetLabel,
             JetValidationErrors,
             DefaultLayout,
+            TextInput
         },
         data() {
             return {
@@ -80,9 +96,33 @@
                         'placeholder': 'Иванович',
                         'required': false,
                     },
+                    'sex': {
+                        'shown_name': 'Пол',
+                        'type': 'radio',
+                        'model': '',
+                        'placeholder': '',
+                        'required': true,
+                        'values': [
+                            {
+                                name: 'male',
+                                shown_name: 'Мужской',
+                            },
+                            {
+                                name: 'female',
+                                shown_name: 'Женский',
+                            },
+                        ]
+                    },
+                    'birth_date': {
+                        'shown_name': 'Дата рождения',
+                        'type': 'date',
+                        'model': '',
+                        'placeholder': '01.01.1990',
+                        'required': false,
+                    },
                     'email': {
                         'shown_name': 'Электронная почта',
-                        'type': 'email',
+                        'type': 'text',
                         'model': '',
                         'placeholder': 'ivanov@mail.ru',
                         'required': true,
@@ -114,10 +154,23 @@
 
         methods: {
             submit() {
+                console.log({
+                    fam: this.fields.fam.model,
+                    im: this.fields.im.model,
+                    otch: this.fields.otch.model,
+                    sex: this.fields.sex.model,
+                    birth_date: this.fields.birth_date.model,
+                    email: this.fields.email.model,
+                    login: this.fields.login.model,
+                    password: this.fields.password.model,
+                    password_confirmation: this.fields.password_confirmation.model,
+                })
                 this.form = this.$inertia.form({
                     fam: this.fields.fam.model,
                     im: this.fields.im.model,
                     otch: this.fields.otch.model,
+                    sex: this.fields.sex.model,
+                    birth_date: this.fields.birth_date.model,
                     email: this.fields.email.model,
                     login: this.fields.login.model,
                     password: this.fields.password.model,
