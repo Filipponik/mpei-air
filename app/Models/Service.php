@@ -16,7 +16,7 @@ class Service extends Model
 
     protected $hidden = [
         'id',
-        'service_type_id'
+        'service_type_id',
         'created_at',
         'updated_at',
         'deleted_at'

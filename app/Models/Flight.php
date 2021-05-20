@@ -18,6 +18,7 @@ class Flight extends Model
         'airport_to',
         'airline',
         'plane',
+        'locked_seats',
     ];
 
     protected $hidden = [
@@ -155,7 +156,9 @@ class Flight extends Model
         return $this->belongsTo(Airline::class, 'airline_id', 'id');
     }
 
-
+    public function tickets() {
+        return $this->hasMany(Ticket::class);
+    }
     /**
      * Get the status that owns the Flight
      *
@@ -176,9 +179,16 @@ class Flight extends Model
         return $this->plane()->first()->airline()->first();
     }
     public function getPlaneAttribute() {
-        return $this->plane()->first()->plane_model()->first();
+        return $this->plane()->first();
     }
     public function getStatusAttribute() {
         return $this->status()->first()->name;
+    }
+
+    public function getLockedSeatsAttribute() {
+        $collection = $this->tickets()->get()->map(function($item, $key) {
+            return $item->get_anon_data();
+        });
+        return $collection;
     }
 }
