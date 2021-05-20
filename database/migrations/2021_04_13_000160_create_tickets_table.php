@@ -20,13 +20,11 @@ class CreateTicketsTable extends Migration
             $table->string('class')->default('econom');
             $table->unsignedBigInteger('flight_id');
             $table->unsignedBigInteger('ticket_status_id');
-            $table->unsignedBigInteger('tariff_id');
             $table->unsignedBigInteger('person_id');
             $table->unsignedBigInteger('order_id');
 
             $table->foreign('flight_id')->references('id')->on('flights');
             $table->foreign('ticket_status_id')->references('id')->on('ticket_statuses');
-            $table->foreign('tariff_id')->references('id')->on('tariffs');
             $table->foreign('person_id')->references('id')->on('people');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();

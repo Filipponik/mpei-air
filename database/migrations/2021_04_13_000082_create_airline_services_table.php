@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServiceOrdersTable extends Migration
+class CreateAirlineServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateServiceOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_orders', function (Blueprint $table) {
+        Schema::create('airline_services', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('service_id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('airline_id');
+            $table->unsignedDecimal('cost');
 
             $table->foreign('service_id')->references('id')->on('services');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('airline_id')->references('id')->on('airlines');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +33,6 @@ class CreateServiceOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_orders');
+        Schema::dropIfExists('airline_services');
     }
 }

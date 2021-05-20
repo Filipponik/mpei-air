@@ -162,6 +162,7 @@
                     col: false,
                     row: false
                 },
+                summary_cost: false,
                 token: this.$page.props.user?.defaultToken,
             }
         },
@@ -282,7 +283,11 @@
                 }
             },
 
-            tryToBuyTicket: function(info) {
+            tryToBuyTicket: function() {
+                if (!this.token) {
+                    alert('Необходимо авторизоваться или зарегистрироваться')
+                    return false
+                }
                 axios({
                     method: 'POST',
                     url: '/api/tickets/buy',
@@ -299,6 +304,7 @@
                         // TODO Добавить дополнительные услуги
                         'optional_services': this.flight_code,
                         // TODO ДОБАВИТЬ ЦЕНЫ
+                        'cost': this.summary_cost,
                     }
                 }).then((response) => {
                     console.log(response.data)

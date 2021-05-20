@@ -47,6 +47,9 @@ class PlaneSeeder extends Seeder
             $payload[] = [
                 'plane_model_id' => rand(1, 9),
                 'airline_id' => rand(1, 9),
+                'cost_econom' => rand(10000, 20000),
+                'cost_business' => rand(30000, 40000),
+                'cost_first' => rand(50000, 200000),
             ];
         }
         DB::table('planes')->insert($payload);

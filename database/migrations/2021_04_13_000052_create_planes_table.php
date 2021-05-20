@@ -17,6 +17,10 @@ class CreatePlanesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('plane_model_id');
             $table->unsignedBigInteger('airline_id');
+            $table->unsignedDecimal('cost_econom');
+            $table->unsignedDecimal('cost_business');
+            $table->unsignedDecimal('cost_first');
+
 
             $table->foreign('plane_model_id')->references('id')->on('plane_models');
             $table->foreign('airline_id')->references('id')->on('airlines');
