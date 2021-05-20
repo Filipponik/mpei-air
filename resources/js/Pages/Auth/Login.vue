@@ -66,6 +66,10 @@
             }
         },
 
+        mounded() {
+            document.title = 'Авторизация'
+        },
+        
         methods: {
             submit() {
                 this.form

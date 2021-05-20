@@ -14,14 +14,14 @@
                     <p class="text-xs text-gray-500 m-0 mb-5 p-0 hover:text-gray-900">(поля, помеченные звездочкой, обязательны для заполнения)</p>
 
                     <form @submit.prevent="submit">
-                        <div v-for="(field, key) in fields" class="relative mb-4">
+                        <div v-for="(field, key) in fields" class="relative mb-4" :key="key">
                             <div v-if="field.type == 'text' || field.type == 'password'">
                                 <label :for="key" class="leading-7 text-sm text-gray-600">{{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></label>
                                 <input :type="field.type" :id="key" v-model="field.model" :name="key" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" :placeholder="field.placeholder" :required="field.required">
                             </div>
                             <div v-else-if="field.type == 'radio'">
                                 <p class="leading-7 text-sm text-gray-600"> {{ field.shown_name }}<span v-show="field.required" class="text-red-500">*</span></p>
-                                <div v-for="value in field.values">
+                                <div v-for="value in field.values" :key="value.name">
                                     <input type="radio" :name="key" :id="value.name" :value="value.name" v-model="field.model">
                                     <label class="mx-2 w-full" :for="value.name">{{ value.shown_name }}</label>
                                 </div>
@@ -150,6 +150,10 @@
                     },
                 }
             }
+        },
+
+        mounded() {
+            document.title = 'Регистрация'
         },
 
         methods: {
