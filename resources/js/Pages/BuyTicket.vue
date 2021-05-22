@@ -187,6 +187,7 @@
                 show_options: false,
                 available_services: [],
                 selected_services: [],
+                status: false,
             }
         },
 
@@ -356,7 +357,11 @@
                         'cost': this.summary_cost,
                     }
                 }).then((response) => {
+                    // TODO Отображение результатов покупки билета
+                    // TODO Платежная система
                     console.log(response.data)
+                }).catch((error) => {
+                    this.status = 'error'
                 });
             },
         }
