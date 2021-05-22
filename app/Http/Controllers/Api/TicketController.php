@@ -22,7 +22,6 @@ class TicketController extends Controller
                 'required',
                 'string',
                 Rule::in(['me', 'another']),
-
             ],
             'type_class' => [
                 'required',
@@ -35,7 +34,11 @@ class TicketController extends Controller
             ],
             'optional_services' => [
                 'required',
-                'string',
+                'array',
+            ],
+            'cost' => [
+                'required',
+                'numeric',
             ],
         ]);
         return true;

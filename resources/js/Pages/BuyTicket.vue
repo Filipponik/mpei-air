@@ -1,10 +1,17 @@
 <template>
     <default-layout>
         <div @click="currentStage++" class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
-            <div class="w-full sm:w-1/2">
-                <!-- <flight-card-block :flight="flightInfo" :isFromList="false" :showButtons="false">
+            <div v-if="!token" class="w-full sm:w-1/2">
+                <div class="mt-2 md:mt-10 relative border border-indigo-500 w-full bg-gray-100 rounded-lg p-2 sm:p-8 inline-block ml-auto mr-auto shadow-xl">
+                    <h1 class="mb-1 md:mb-3 text-lg md:text-xl">Для покупки билетов необходимо войти в свой аккаунт или создать новый</h1>
+                    <a :href="route('login')" class="mr-2"><jet-button>Войти</jet-button></a>
+                    <a :href="route('register')"><jet-button>Зарегистрироваться</jet-button></a>
+                </div>
+            </div>
+            <div v-else class="w-full sm:w-1/2">
+                <flight-card-block :flight="flightInfo" :isFromList="false" :showButtons="false">
                     <p class="text-lg md:text-xl mt-3 text-indigo-600 select-none">Покупка билета ниже ↓</p>
-                </flight-card-block> -->
+                </flight-card-block>
                 <div class="mt-2 md:mt-10 relative border border-indigo-500 w-full bg-gray-100 rounded-lg p-2 sm:p-8 inline-block ml-auto mr-auto shadow-xl">
                     <buy-ticket-stage :title="'Кто полетит'" v-if="currentStage >= 1">
                         <input type="radio" id="me" name="passenger" v-model="passengerType" value="me">
@@ -92,19 +99,22 @@
                     </buy-ticket-stage>
 
                     <buy-ticket-stage :title="'Выберите дополнительные услуги'" v-if="currentStage >= 5">
-                        <p class="text-indigo-600" @click="show_options = !show_options"> {{ (show_options) ? 'Скрыть список' : 'Нажмите, чтобы развернуть список доступных услуг' }}</p>
+                        <p v-if="available_services.length > 0" class="text-indigo-600 cursor-pointer select-none" @click="show_options = !show_options"> {{ (show_options) ? '↑ Скрыть список' : '↓ Нажмите, чтобы развернуть список доступных услуг' }}</p>
                         <div v-show="show_options">
-                            <div v-for="(service, key) in available_services" :key="service.id">
-                                <p>
-                                    <span>{{ key+1 }}. </span>
-                                    <span class="mr-2">{{ service.name }}</span>
+                            <div v-for="service in available_services" :key="service.id">
+                                <input type="checkbox" :id="service.id" :value="service" v-model="selected_services">
+                                <label :for="service.id">
+                                    <!-- <span>{{ key+1 }}. </span> -->
+                                    <span class="mx-2">{{ service.name }}</span>
                                     <span class="text-indigo-600">{{ service.cost }}₽</span>
-                                </p>
+                                </label>
                             </div>
                         </div>
+                        <p v-if="available_services.length == 0" class="text-indigo-600">К сожалению, у данной авиакомпании нет дополнительных услуг.</p>
+                        
                     </buy-ticket-stage>
 
-                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5">
+                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5 && token">
                         <p class="mb-1 md:mb-3 text-indigo-600 text-lg md:text-xl">К оплате <span class="p-1 bg-yellow-200 rounded">{{ summary_cost }}₽</span></p>
                         <!-- <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
                         <label class="mx-2" for="cash">Наличные при получении</label><br> -->
@@ -114,7 +124,7 @@
                         <label class="ml-2 mb-1" for="gpay">Google Pay</label>
                     </buy-ticket-stage>
 
-                    <buy-ticket-stage v-if="currentStage >= 6" :class="'mb-0'">
+                    <buy-ticket-stage v-if="currentStage >= 6 && token" :class="'mb-0'">
                         <jet-button @click="tryToBuyTicket">Купить билет</jet-button>
                     </buy-ticket-stage>
                 </div>
@@ -176,6 +186,7 @@
                 token: this.$page.props.user?.defaultToken,
                 show_options: false,
                 available_services: [],
+                selected_services: [],
             }
         },
 
@@ -196,7 +207,6 @@
                     url: '/api/services/' + this.flightInfo.airline.code
                 }).then((response) => {
                     this.available_services = response.data;
-                    console.log(this.available_services)
                 });
             });
         },
@@ -242,31 +252,27 @@
                         this.currentStage = 4
                 },
                 deep: true
-            }
+            },
+            selected_services: {
+                handler: function() {
+                    this.checkSummaryCost();
+                },
+                deep: true
+            },
 
 
         },
 
         methods: {
             checkSummaryCost: function () {
-                let class_term = 0;
-                switch (this.type_class) {
-                    case 'econom':
-                        class_term = this.flightInfo.plane.cost_econom
-                        break
-                    case 'business':
-                        class_term = this.flightInfo.plane.cost_business
-                        break
-                    case 'first':
-                        class_term = this.flightInfo.plane.cost_first
-                        break
-                
-                    default:
-                        break;
+                let seat_cost = this.flightInfo.plane['cost_'+this.type_class]
+                let services_cost = 0
+                for (let index = 0; index < this.selected_services.length; index++) {
+                    const element = this.selected_services[index];
+                    services_cost += parseFloat(element.cost)
                 }
 
-                this.summary_cost = parseFloat(class_term)
-                console.log(this.summary_cost)
+                this.summary_cost = (parseFloat(seat_cost) + parseFloat(services_cost)).toFixed(2)
             },
 
             is_enabled_seat: function(i, j, seat_class) {
@@ -308,16 +314,11 @@
             },
 
             check_class: function() {
-                if (this.type_class !== 'econom' && this.type_class !== 'business' && this.type_class !== 'first')
-                    return false
-                if (this.type_class === 'econom' && this.available_classes.econom === false) 
-                    return false
-                if (this.type_class === 'business' && this.available_classes.business === false) 
-                    return false
-                if (this.type_class === 'first' && this.available_classes.first === false) 
-                    return false
+                if (['econom', 'business', 'first'].includes(this.type_class)
+                    && this.available_classes[this.type_class] !== false)
+                    return true
 
-                return true
+                return false
             },
 
             get_seat_name: function(seat, col) {
@@ -351,9 +352,7 @@
                         'passengerType': this.passengerType,
                         'type_class': this.type_class,
                         'selected_seat': this.selected_seat,
-                        // TODO Добавить дополнительные услуги
-                        'optional_services': this.flight_code,
-                        // TODO ДОБАВИТЬ ЦЕНЫ
+                        'optional_services': this.selected_services,
                         'cost': this.summary_cost,
                     }
                 }).then((response) => {

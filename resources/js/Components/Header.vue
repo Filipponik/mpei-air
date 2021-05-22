@@ -13,7 +13,7 @@
                         </div>
                         <!-- Navigation Links -->
                         <div class="hidden space-x-2 md:-my-px md:ml-3 md:flex text-center">
-                            <jet-nav-link v-for="nav_element in navMenu" :href="route(nav_element.route_name)"  :active="route().current(nav_element.route_name)">
+                            <jet-nav-link v-for="nav_element in navMenu" :href="route(nav_element.route_name)" :key="nav_element.name" :active="route().current(nav_element.route_name)">
                                 {{ nav_element.shown_name }}
                             </jet-nav-link>
                         </div>
@@ -65,7 +65,7 @@
                     <div v-else class="hidden md:flex md:ml-6 my-2">
                         <!-- Auth buttons -->
                         <div class="ml-0 relative flex flex-wrap">
-                            <div v-for="button in authButtons">
+                            <div v-for="button in authButtons" :key="button.name">
                                 <inertia-link v-if="button.condition" :href="route(button.route_name)" :active="route().current(button.route_name)" class="border border-indigo-500 inline-flex items-center bg-gray-100 border-0 py-1 px-1 md:px-3 my-1 mx-2 focus:outline-none hover:bg-gray-200 rounded text-base">
                                     {{ button.shown_name }}
                                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@
             <!-- Responsive menu -->
             <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="md:hidden">
                 <div class="pt-2 pb-3 space-y-1">
-                    <jet-responsive-nav-link v-for="nav_element in navMenu" :href="route(nav_element.route_name)"  :active="route().current(nav_element.route_name)">
+                    <jet-responsive-nav-link v-for="nav_element in navMenu" :href="route(nav_element.route_name)" :key="nav_element.name" :active="route().current(nav_element.route_name)">
                         {{ nav_element.shown_name }}
                     </jet-responsive-nav-link>
                 </div>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div v-else class="mt-3 space-y-1">
-                    <div v-for="button in authButtons">
+                    <div v-for="button in authButtons" :key="button.name">
                         <jet-responsive-nav-link v-if="button.condition" :href="route(button.route_name)" :active="route().current(button.route_name)">
                             {{ button.shown_name }}
                         </jet-responsive-nav-link>
@@ -144,7 +144,6 @@
     import JetDropdownLink from '@/Jetstream/DropdownLink'
     import JetNavLink from '@/Jetstream/NavLink'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
-    import Header from '@/Components/Header'
     export default {
         props: {
             canLogin: Boolean,
