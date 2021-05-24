@@ -55,6 +55,7 @@
                     airport_from: '',
                     airport_to: '',
                     query: '',
+                    status: 'Запланирован',
                     page: 1,
                 },
                 showCard: false,
@@ -63,10 +64,10 @@
         },
 
         mounted() {
-            if (localStorage.flightSearchOptions) {
+            if (localStorage?.flightSearchOptions) {
                 this.searchOptions = JSON.parse(localStorage.flightSearchOptions)
             }
-            this.request('/api/flights', this.searchOptions)
+            this.request('/api/flights', Object.assign({'status': 'Запланирован'}, this.searchOptions))
             
             document.title = "Поиск рейсов"
         },
@@ -86,11 +87,11 @@
                 this.searchOptions = val;
                 localStorage.flightSearchOptions = JSON.stringify(val);
                 if (JSON.stringify(this.searchOptions) === JSON.stringify(this.emptySearch)) {
-                    this.request('/api/flights');
+                    this.request('/api/flights', {'status': 'Запланирован'});
                     delete localStorage.flightSearchOptions;
                 }
                 else {
-                    this.request('/api/flights', this.searchOptions);
+                    this.request('/api/flights', Object.assign({'status': 'Запланирован'}, this.searchOptions));
                 }
             },
 

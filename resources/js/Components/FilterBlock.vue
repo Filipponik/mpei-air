@@ -1,10 +1,6 @@
 <template>
     <div>
         <div class="mb-1 sm:mb-2">
-            <label class="block" for="code">Код рейса</label>
-            <text-input @update:modelValue="filtersSet" v-model="searchQuery.code" class="w-full" :id="'code'" :ph="'Код рейса'"/>
-        </div>
-        <div class="mb-1 sm:mb-2">
             <label class="block" for="city_from">Из города</label>
             <text-input @update:modelValue="filtersSet" v-model="searchQuery.city_from" class="w-full" :id="'city_from'" :ph="'Город вылета'"/>
         </div>

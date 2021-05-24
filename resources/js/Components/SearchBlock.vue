@@ -1,8 +1,8 @@
 <template>
     <div class="p-5 border rounded border-indigo-500">
-        <div class="mb-2">Поиск</div>
+        <div class="mb-2">Поиск по коду рейса:</div>
         <div>
-            <text-input v-model="searchQuery.query" class="w-full" :id="'search'" :ph="'Поиск...'" />
+            <text-input v-model="searchQuery.code" class="w-full" :id="'search'" :ph="'Код рейса...'" />
         </div>
         <div class="flex justify-between">
             <jet-button @click="search" class="my-2 mr-2 sm:mr:0">Искать</jet-button>
@@ -46,10 +46,10 @@
                     airport_from: '',
                     airport_to: '',
                     query: '',
+                    status: 'Запланирован',
                     page: 1,
                 },
                 searchQuery: {
-                    query: '',
                     code: '',
                     city_from: '',
                     city_to: '',
@@ -57,6 +57,9 @@
                     date_to: '',
                     airport_from: '',
                     airport_to: '',
+                    query: '',
+                    status: 'Запланирован',
+                    page: 1,
                 },
                 filters: false,
                 showNotification: false,

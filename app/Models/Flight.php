@@ -111,6 +111,11 @@ class Flight extends Model
                     break;
             }
         }
+        if (isset($customQuery['status'])) {
+            $query->join('flight_statuses', 'flights.flight_status_id', '=', 'flight_statuses.id')
+                ->where('flight_statuses.name', $customQuery);
+        }
+        $query->orderBy('flights.date_from', 'asc');
         return $query;
         
     }
