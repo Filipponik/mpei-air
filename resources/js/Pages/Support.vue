@@ -71,6 +71,7 @@
         },
 
         mounted() {
+            document.title = 'Обратная связь'
             if (this.$page.props?.user?.defaultToken) {
                 this.use_data_label = true
             }

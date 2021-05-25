@@ -19,15 +19,19 @@ Route::group(['prefix' => 'flights'], function () {
     Route::get('/{code}', [FlightController::class, 'flightByCode']);
 });
 
-
 Route::group(['prefix' => 'services'], function () {
-    // Route::get('/', [FlightController::class, 'flights']);
     Route::get('/{code}', [ServicesController::class, 'servicesByCode']);
 });
 
 Route::group(['prefix' => 'tickets', 'middleware' => 'auth:sanctum'], function() {
     Route::post('buy', [TicketController::class, 'buyTicket']);
 });
+
+Route::group(['prefix' => 'support'], function() {
+    Route::post('send', [FeedbackController::class, 'addFeedback']);
+});
+
+
 
 Route::group(['prefix' => 'tariffs'], function () {
     Route::get('/', [TariffController::class, 'tariffs']);

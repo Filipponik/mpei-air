@@ -1,6 +1,6 @@
 <template>
     <default-layout>
-        <div @click="currentStage++" class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
+        <div class="flex flex-wrap items-center justify-center align-centermt-5 md:mt-0 w-full">
             <div v-if="!token" class="w-full sm:w-1/2">
                 <div class="mt-2 md:mt-10 relative border border-indigo-500 w-full bg-gray-100 rounded-lg p-2 sm:p-8 inline-block ml-auto mr-auto shadow-xl">
                     <h1 class="mb-1 md:mb-3 text-lg md:text-xl">Для покупки билетов необходимо войти в свой аккаунт или создать новый</h1>
@@ -78,8 +78,8 @@
                                 </div><br>
                             </div>
                         </div>
-                        <div v-if="available_classes.econom && type_class == 'business'">
-                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
+                        <div v-if="available_classes.business && type_class == 'business'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_business" :key="i">
                                 <div v-for="j in flightInfo.plane.seats_business" :key="j">
                                     <div @click="select_seat(i, j, 'business')"
                                         class="w-10 text-xs text-center border rounded p-1 m-1"
@@ -87,8 +87,8 @@
                                 </div><br>
                             </div>
                         </div>
-                        <div v-if="available_classes.econom && type_class == 'first'">
-                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_econom" :key="i">
+                        <div v-if="available_classes.first && type_class == 'first'">
+                            <div class="flex flex-row justify-start w-full" v-for="i in flightInfo.plane.cols_first" :key="i">
                                 <div v-for="j in flightInfo.plane.seats_first" :key="j">
                                     <div @click="select_seat(i, j, 'first')"
                                         class="w-10 text-xs text-center border rounded p-1 m-1"
@@ -98,7 +98,7 @@
                         </div>
                     </buy-ticket-stage>
 
-                    <buy-ticket-stage :title="'Выберите дополнительные услуги'" v-if="currentStage >= 5">
+                    <buy-ticket-stage :title="'Выберите дополнительные услуги'" v-if="currentStage >= 4">
                         <p v-if="available_services.length > 0" class="text-indigo-600 cursor-pointer select-none" @click="show_options = !show_options"> {{ (show_options) ? '↑ Скрыть список' : '↓ Нажмите, чтобы развернуть список доступных услуг' }}</p>
                         <div v-show="show_options">
                             <div v-for="service in available_services" :key="service.id">
@@ -114,7 +114,7 @@
                         
                     </buy-ticket-stage>
 
-                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 5 && token">
+                    <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 4 && token">
                         <p class="mb-1 md:mb-3 text-indigo-600 text-lg md:text-xl">К оплате <span class="p-1 bg-yellow-200 rounded">{{ summary_cost }}₽</span></p>
                         <!-- <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
                         <label class="mx-2" for="cash">Наличные при получении</label><br> -->
@@ -124,7 +124,7 @@
                         <label class="ml-2 mb-1" for="gpay">Google Pay</label>
                     </buy-ticket-stage>
 
-                    <buy-ticket-stage v-if="currentStage >= 6 && token" :class="'mb-0'">
+                    <buy-ticket-stage v-if="currentStage >= 5 && token" :class="'mb-0'">
                         <jet-button @click="tryToBuyTicket">Купить билет</jet-button>
                     </buy-ticket-stage>
                 </div>

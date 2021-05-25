@@ -10,8 +10,10 @@ class AirlineService extends Model
     use HasFactory;
 
     public function scopeByAirline($query, $code) {
-        $air_id = Airline::where('code', $code)->first()->id;
-        $query->where('airline_id', $air_id);
+        if (($air = Airline::where('code', $code)->first())) {
+            $air_id = $air->id;
+            $query->where('airline_id', $air_id);
+        }
         return $query;
     }
 
