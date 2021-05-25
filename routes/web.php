@@ -52,9 +52,9 @@ Route::get('cafe-and-shops', function() {
     return Inertia::render('CafeShops');
 })->name('cafeshops');
 
-Route::get('how-to-get-to', function() {
-    return Inertia::render('HowToGetTo');
-})->name('howtogetto');
+Route::get('support', function() {
+    return Inertia::render('Support');
+})->name('support');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

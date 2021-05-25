@@ -353,7 +353,7 @@
                         'passengerType': this.passengerType,
                         'type_class': this.type_class,
                         'selected_seat': this.selected_seat,
-                        'optional_services': this.selected_services,
+                        'optional_services': !(this.selected_services) ? false : this.selected_services,
                         'cost': this.summary_cost,
                     }
                 }).then((response) => {

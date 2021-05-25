@@ -33,10 +33,6 @@ class TicketController extends Controller
                 'required',
                 'array',
             ],
-            'optional_services' => [
-                'required',
-                'array',
-            ],
             'cost' => [
                 'required',
                 'numeric',

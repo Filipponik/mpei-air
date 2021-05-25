@@ -37,7 +37,7 @@ class User extends Authenticatable
     protected $appends = [
         'fam',
         'im',
-        'otch' ,
+        'otch',
         'sex',
         'birth_date',
         'profile_photo_url',

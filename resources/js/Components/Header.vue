@@ -184,9 +184,9 @@
                         'route_name': 'cafeshops',
                     },
                     {
-                        'name': 'how-to-get-to',
-                        'shown_name': 'Как добраться',
-                        'route_name': 'howtogetto',
+                        'name': 'support',
+                        'shown_name': 'Обратная связь',
+                        'route_name': 'support',
                     },
                 ],
                 authButtons: [
