@@ -40,4 +40,17 @@ class FeedbackController extends Controller
             return response()->json(['code' => 'Failed'], 400);
         }
     }
+
+    public function listFeedback(Request $req) {
+        if ($req->user()->role !== 'admin')
+            abort(404);
+            
+        $query = $req->query();
+        $countOnPage = 10;
+        if (empty($query) || !$query) {
+            $flights = Feedback::paginate($countOnPage);
+        }
+
+        return response()->json($flights, 200);
+    }
 }

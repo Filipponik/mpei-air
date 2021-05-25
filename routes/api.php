@@ -29,6 +29,7 @@ Route::group(['prefix' => 'tickets', 'middleware' => 'auth:sanctum'], function()
 
 Route::group(['prefix' => 'support'], function() {
     Route::post('send', [FeedbackController::class, 'addFeedback']);
+    Route::middleware('auth:sanctum')->get('list', [FeedbackController::class, 'listFeedback']);
 });
 
 

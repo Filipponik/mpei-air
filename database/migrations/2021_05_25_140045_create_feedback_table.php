@@ -18,6 +18,7 @@ class CreateFeedbackTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->text('message');
+            $table->text('status')->default('active');
             
             $table->timestamps();
             $table->softDeletes();
