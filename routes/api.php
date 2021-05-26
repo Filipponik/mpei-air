@@ -30,9 +30,12 @@ Route::group(['prefix' => 'tickets', 'middleware' => 'auth:sanctum'], function()
 Route::group(['prefix' => 'support'], function() {
     Route::post('send', [FeedbackController::class, 'addFeedback']);
     Route::middleware('auth:sanctum')->get('list', [FeedbackController::class, 'listFeedback']);
+    Route::middleware('auth:sanctum')->post('update', [FeedbackController::class, 'update']);
 });
 
-
+Route::group(['prefix' => 'buy-history', 'middleware' => 'auth:sanctum'], function() {
+    Route::get('/', [UserController::class, 'buyHistory']);
+});
 
 Route::group(['prefix' => 'tariffs'], function () {
     Route::get('/', [TariffController::class, 'tariffs']);

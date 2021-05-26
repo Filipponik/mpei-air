@@ -44,6 +44,10 @@ Route::group(['prefix' => 'flight'] , function () {
     })->name('buyticket');
 });
 
+Route::middleware(['auth:sanctum', 'verified'])->get('buy-history', function() {
+    return Inertia::render('BuyHistory');
+})->name('buyhistory');
+
 Route::get('parking-zone', function() {
     return Inertia::render('ParkingZone');
 })->name('parkingzone');
@@ -52,9 +56,18 @@ Route::get('cafe-and-shops', function() {
     return Inertia::render('CafeShops');
 })->name('cafeshops');
 
-Route::get('support', function() {
-    return Inertia::render('Support');
-})->name('support');
+Route::group(['prefix' => 'support', 'middleware' => 'auth:sanctum'], function() {
+    Route::get('/', function() {
+        return Inertia::render('Support');
+    })->name('support');
+
+    Route::middleware(['auth:sanctum', 'verified'])->get('/list', function () {
+        return Inertia::render('FeedbackList');
+    })->name('feedbacklist');
+    
+});
+
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

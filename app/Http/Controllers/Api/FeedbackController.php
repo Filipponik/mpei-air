@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use Illuminate\Validation\Rule;
 
 class FeedbackController extends Controller
 {
@@ -43,14 +44,38 @@ class FeedbackController extends Controller
 
     public function listFeedback(Request $req) {
         if ($req->user()->role !== 'admin')
-            abort(404);
+            abort(403);
             
         $query = $req->query();
         $countOnPage = 10;
-        if (empty($query) || !$query) {
-            $flights = Feedback::paginate($countOnPage);
-        }
+        $feedback_list = Feedback::status($query['status'])->orderBy('created_at', 'desc');
+        // if (empty($query) || !$query) {
+        $feedback_list = $feedback_list->paginate($countOnPage);
+        // }
 
-        return response()->json($flights, 200);
+        return response()->json($feedback_list, 200);
+    }
+
+    public function update(Request $req)
+    {
+        $req->validate([
+            'id' => [
+                'required',
+                'numeric'
+            ],
+            'status' => [
+                'required',
+                'string',
+                Rule::in(['new', 'inprogress', 'closed'])
+            ],
+        ]);
+        if ($req->user()->role !== 'admin')
+            abort(403);
+        
+        $feedback = Feedback::find($req->input('id'));
+        $feedback->status = $req->input('status');
+        $feedback->save();
+
+        return response()->json($feedback, 201);
     }
 }

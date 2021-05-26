@@ -196,13 +196,14 @@
         },
 
         props: [
-            'tokens',
+            'tokenss',
             'availablePermissions',
             'defaultPermissions',
         ],
-
+        
         data() {
             return {
+                tokens: this.tokenss,
                 createApiTokenForm: this.$inertia.form({
                     name: '',
                     permissions: this.defaultPermissions,
@@ -220,6 +221,10 @@
             }
         },
 
+        mounted() {
+            this.tokens.splice(0, 1)
+        },
+        
         methods: {
             createApiToken() {
                 this.createApiTokenForm.post(route('api-tokens.store'), {

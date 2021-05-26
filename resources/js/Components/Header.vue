@@ -47,6 +47,14 @@
                                 Профиль
                             </jet-dropdown-link>
 
+                            <jet-dropdown-link v-if="$page.props?.user?.role === 'user'" :href="route('buyhistory')">
+                                История покупок
+                            </jet-dropdown-link>
+
+                            <jet-dropdown-link v-if="$page.props?.user?.role === 'admin'" :href="route('feedbacklist')">
+                                Запросы пользователей
+                            </jet-dropdown-link>
+
                             <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
                                 API Токены
                             </jet-dropdown-link>
@@ -110,6 +118,14 @@
                     <div class="mt-3 space-y-1">
                         <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
                             Профиль
+                        </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link v-if="$page.props?.user?.role === 'user'" :href="route('buyhistory')" :active="route().current('buyhistory')">
+                            История покупок
+                        </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link v-if="$page.props?.user?.role === 'admin'" :href="route('feedbacklist')" :active="route().current('feedbacklist')">
+                            Запросы пользователей
                         </jet-responsive-nav-link>
 
                         <jet-responsive-nav-link :href="route('api-tokens.index')" :active="route().current('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">

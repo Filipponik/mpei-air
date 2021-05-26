@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Feedback extends Model
 {
     use HasFactory;
+
+    public function scopeStatus($query, $status) 
+    {
+        $query->where('status', $status);
+        
+        return $query;
+    }
 }
