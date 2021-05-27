@@ -56,7 +56,7 @@ Route::get('cafe-and-shops', function() {
     return Inertia::render('CafeShops');
 })->name('cafeshops');
 
-Route::group(['prefix' => 'support', 'middleware' => 'auth:sanctum'], function() {
+Route::group(['prefix' => 'support'], function() {
     Route::get('/', function() {
         return Inertia::render('Support');
     })->name('support');
