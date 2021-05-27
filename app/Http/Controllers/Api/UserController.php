@@ -9,6 +9,6 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function buyHistory (Request $req) {
-        return response()->json($req->user()->orders()->get(),200);//->get()->tickets, 200);
+        return response()->json($req->user()->orders()->paginate(10),200);//->get()->tickets, 200);
     }
 }

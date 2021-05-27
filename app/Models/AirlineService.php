@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AirlineService extends Model
 {
     use HasFactory;
+    protected $appends = [
+        'name',
+    ];
 
     public function scopeByAirline($query, $code) {
         if (($air = Airline::where('code', $code)->first())) {
@@ -21,7 +25,12 @@ class AirlineService extends Model
     public function airline() {
         return $this->belongsTo(Airline::class, 'airline_id', 'id');
     }
-    public function service() {
-        return $this->belongsTo(Service::class, 'service_id', 'id');
+
+    public function service() : BelongsTo {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function getNameAttribute() {
+        return $this->service()->first()->name;
     }
 }

@@ -7,10 +7,10 @@
             <div class="text-base mb-2" title="Сообщение">Статус: {{ get_status(details.status) }}</div>
             <jet-button @click="set_next_status(details.status)" class="text-base"> {{ get_next_status(details.status) }} </jet-button>
         </popup>
-        <div class="flex flex-row flex-wrap justify-start justify-between">
+        <div class="flex flex-row flex-wrap justify-between">
             <div class="mb-3">
                 <h2 class="text-lg">Статус запроса:</h2>
-                <div v-for="(status, key) in statuses">
+                <div v-for="(status, key) in statuses" :key="key">
                     <input class="mr-2 md:mr-3" type="radio" :value="key" :id="key" name="selected_status" v-model="selected_status"/>
                     <label :for="key"> {{ status }} </label>
                 </div>
