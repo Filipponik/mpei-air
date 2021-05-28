@@ -11,8 +11,8 @@
                     <p class="text-lg mb-1"> {{getClass(tick.class)}}, место {{get_seat_name(tick.row, tick.col)}} </p>
                     <div v-if="tick.services?.length > 0">Дополнительные услуги:
                         <div v-for="(service, key) in tick.services" :key="key">
-                        <p class="text-base mb-1"> {{key + 1}}. {{ service.name }} </p>
-                        <p class="text-base mb- text-indigo-600"> {{ service.cost }} ₽ </p>
+                            <p class="text-base mb-1"> {{key + 1}}. {{ service.name }} </p>
+                            <p class="text-base mb- text-indigo-600"> {{ service.cost }} ₽ </p>
                         </div>
                     </div>
                     <p v-else class="text-base mb-2">Дополнительных услуг не выбрано.</p>
@@ -38,6 +38,7 @@
                     <td class="p-2 mb-2">{{ dat?.cost }} ₽</td>
                 </tr>
             </table>
+            <pagination-block v-if="data.last_page > 1"  class="p-1 sm:p-2 mt-2 flex text-xs sm:text-base justify-center" @clickedPagination="clickedPagination($event)" :pages="data"/>
         </div>
         
         <div v-else>
@@ -48,13 +49,15 @@
 <script>
     import Layout from '@/Layouts/DefaultLayout'
     import Popup from '@/Components/Popup'
+    import PaginationBlock from '@/Components/PaginationBlock'
 
     export default {
         props: ['',],
 
         components: {
             Layout,
-            Popup
+            Popup,
+            PaginationBlock
 
         },
 
@@ -62,28 +65,32 @@
             return {
                 data: false,
                 details:false,
+                current_page: 1
             }
         },
 
         mounted() {
             document.title = 'История покупок'
-            axios({
-                method: 'GET',
-                url: '/api/buy-history',
-                params: {
-                    
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + this.$page.props?.user?.defaultToken,
-                }
-            }).then((result) => {
-                this.data = result.data
-            }).catch((err) => {
-                console.log(err)
-            });
+            this.request()
         },
 
         methods: {
+            request: function() {
+                axios({
+                    method: 'GET',
+                    url: '/api/buy-history',
+                    params: {
+                        page: this.current_page,
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.$page.props?.user?.defaultToken,
+                    }
+                }).then((result) => {
+                    this.data = result.data
+                }).catch((err) => {
+                    console.log(err)
+                });
+            },
             get_seat_name: function(seat, col) {
                 return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[col-1] + seat
             },
@@ -124,6 +131,10 @@
                 }
                 return sum;
             },
+            clickedPagination: function(page) {
+                this.current_page = page.label
+                this.request()
+            }
         }
     }
 </script>

@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div>
-                <jet-button @click="request({status: selected_status}, 'get')">Обновить</jet-button>
+                <jet-button @click="request('get', {})">Обновить</jet-button>
             </div>
         </div>
 
@@ -37,6 +37,7 @@
                     <td class="p-2 mb-2">{{ get_status(dat.status) }}</td>
                 </tr>
             </table>
+            <pagination-block v-if="data.last_page > 1" class="p-1 sm:p-2 mt-2 flex text-xs sm:text-base justify-center" @clickedPagination="clickedPagination($event)" :pages="data"/>
         </div>
         
         <div v-else>
@@ -48,6 +49,7 @@
     import Layout from '@/Layouts/DefaultLayout'
     import Popup from '@/Components/Popup'
     import JetButton from '@/Jetstream/Button'
+    import PaginationBlock from '@/Components/PaginationBlock'
 
     export default {
         props: ['',],
@@ -55,7 +57,8 @@
         components: {
             Layout,
             Popup,
-            JetButton
+            JetButton,
+            PaginationBlock
         },
 
         data() {
@@ -68,29 +71,31 @@
                     closed: 'Закрыт',
                 },
                 selected_status: 'new',
+                current_page: 1,
             }
         },
 
         mounted() {
             document.title = 'Запросы через форму обратной связи'
-            this.request({'status': this.selected_status}, 'get')
+            this.request('get', {})
         },
 
         watch: {
             selected_status: function() {
-                this.request({status: this.selected_status}, 'get')
+                this.current_page = 1
+                this.request('get', {})
             },
 
             details: {
                 handler: function() {
-                    this.request({status: this.selected_status}, 'get')
+                    this.request('get', {})
                 },
                 deep: true
             }
         },
 
         methods: {
-            request: function(params, type) {
+            request: function(type, params) {
                 if (type == 'get') {
                     axios({
                         method: 'GET',
@@ -98,7 +103,10 @@
                         headers: {
                             'Authorization': 'Bearer ' + this.$page.props?.user?.defaultToken,
                         },
-                        params: params
+                        params: Object.assign({}, {
+                            'status': this.selected_status,
+                            'page': this.current_page
+                        })
                     }).then((result) => {
                         this.data = result.data
                     }).catch((err) => {
@@ -141,10 +149,10 @@
                         new_status = 'inprogress'
                         break
                 }
-                this.request({
+                this.request('update', {
                     id: this.details.id,
                     status: new_status
-                }, 'update')
+                })
             },
 
             get_status: function(value) {
@@ -161,6 +169,11 @@
                         return 'Вернуть в работу'
                 }
             },
+            
+            clickedPagination: function(page) {
+                this.current_page = page.label
+                this.request('get', {})
+            }
         }
     }
 </script>

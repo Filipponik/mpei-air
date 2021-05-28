@@ -122,10 +122,8 @@
                         message: this.form.message,
                     }
                 }).then((response) => {
-                    // TODO Обработка результата
                     this.sent = true
                     this.success = true
-                    console.log(response.data)
                 }).catch((error) => {
                     this.sent = true
                     this.success = false
