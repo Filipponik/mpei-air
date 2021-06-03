@@ -44,7 +44,7 @@ class FeedbackController extends Controller
 
     public function listFeedback(Request $req) {
         if ($req->user()->role !== 'admin')
-            abort(403);
+            abort(403, 'You are not authorized to see this page');
             
         $query = $req->query();
         $countOnPage = 10;
@@ -70,7 +70,7 @@ class FeedbackController extends Controller
             ],
         ]);
         if ($req->user()->role !== 'admin')
-            abort(403);
+            abort(403, 'You are not authorized to see this page');
         
         $feedback = Feedback::find($req->input('id'));
         $feedback->status = $req->input('status');
