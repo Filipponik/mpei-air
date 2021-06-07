@@ -25,13 +25,15 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> -->
         
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="preload" href="{{ mix('css/app.css') }}" as="style" >
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}" >
 
         <!-- Scripts -->
         @routes
+        <link rel="preload" href="{{ mix('js/app.js') }}" as="script" >
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
