@@ -117,11 +117,11 @@
                     <buy-ticket-stage class="select-none" :title="'Выберите способ оплаты'" v-if="currentStage >= 4 && token">
                         <p class="mb-1 md:mb-3 text-indigo-600 text-lg md:text-xl">К оплате <span class="p-1 bg-yellow-200 rounded">{{ summary_cost }}₽</span></p>
                         <!-- <input type="radio" name="payment_method" id="cash" value="cash" v-model="payment_method">
-                        <label class="mx-2" for="cash">Наличные при получении</label><br> -->
+                        <label class="mx-2" for="cash">Наличные при получении</label><br>
                         <input type="radio" name="payment_method" id="card" value="card" v-model="payment_method">
                         <label class="mx-2 mb-1" for="card">Картой онлайн</label><br>
-                        <input type="radio" name="payment_method" id="gpay" value="gpay" v-model="payment_method">
-                        <label class="ml-2 mb-1" for="gpay">Google Pay</label>
+                        <input type="radio" name="payment_method" id="gpay" value="gpay" v-model="payment_method"> -->
+                        <div id="gpay"></div>
                     </buy-ticket-stage>
 
                     <buy-ticket-stage v-if="currentStage >= 5 && token" :class="'mb-0'">
@@ -129,12 +129,11 @@
                     </buy-ticket-stage>
                 </div>
             </div>
-            
-
         </div>
     </default-layout>
 </template>
 <script>
+    import {onGooglePayLoaded} from '../gpay.js'
     import DefaultLayout from '@/Layouts/DefaultLayout'
     import FlightCardBlock from '@/Components/FlightCardBlock'
     import BuyTicketStage from '@/Components/BuyTicketStage'
@@ -249,8 +248,10 @@
                     if (this.selected_seat
                         && this.selected_seat.col != false
                         && this.selected_seat.row != false
-                        && this.currentStage === 3)
+                        && this.currentStage === 3) {
                         this.currentStage = 4
+                        onGooglePayLoaded()
+                    }
                 },
                 deep: true
             },
