@@ -2,10 +2,16 @@
 
 ![Laravel](https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg)
 
+![Laravel](https://img.shields.io/badge/made%20with-Laravel-brightgreen)
+![VueJS](https://img.shields.io/badge/made%20with-VueJS-brightgreen)
+![TailwindCSS](https://img.shields.io/badge/made%20with-TailwindCSS-brightgreen)
+
 ![Code Size](https://img.shields.io/github/languages/code-size/filipponik/mpei-air)
 ![Last Commit](https://img.shields.io/github/last-commit/filipponik/mpei-air)
 
-Дипломный проект на тему "Разработка информационной системы продажи авиабилетов" для НИУ "МЭИ"
+Дипломный проект на тему **"Разработка информационной системы продажи авиабилетов"** для **НИУ "МЭИ"**
+
+Специальность - **Прикладная информатика**
 
 ## Стек технологий
 
