@@ -28,7 +28,7 @@
     "dependencies": {
         "@popperjs/core": "^2.9.3",
         "es6-promise": "^4.2.8",
-        "v-calendar": "^3.0.0-alpha.5",
+        "v-calendar": "=3.0.0-alpha.5",
         "vuex": "^4.0.2"
     }
 }
