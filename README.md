@@ -77,6 +77,8 @@ MAIL_FROM_NAME="MPEIAir"
 
 ## Скриншоты
 
+### Десктоп версия
+
 Подбор рейса
 
 ![Подбор рейса](https://user-images.githubusercontent.com/44286080/130289797-e95454fd-c09f-4247-a8b1-96431daa7558.png)
@@ -88,3 +90,17 @@ MAIL_FROM_NAME="MPEIAir"
 Форма регистрации
 
 ![Форма регистрации](https://user-images.githubusercontent.com/44286080/130289929-010d6f91-d064-41b3-bcd8-ac2c49b383bc.png)
+
+### Мобильная версия (поддержка от ширины экрана 320px)
+
+Подбор рейса
+
+![Подбор рейса](https://user-images.githubusercontent.com/44286080/130334465-380993b6-d62f-4d29-a161-ea7d1a2c88dc.png)
+
+Форма авторизации
+
+![Форма обратной связи](https://user-images.githubusercontent.com/44286080/130334447-98d083f6-a8f7-4277-9bde-76abaa112fcc.png)
+
+Форма регистрации
+
+![Форма регистрации](https://user-images.githubusercontent.com/44286080/130334470-3293dd4f-4267-4348-b98a-f9c89f77da40.png)
